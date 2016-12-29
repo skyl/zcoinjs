@@ -195,7 +195,7 @@ function checkP2WSHInput (input, witnessScriptHash) {
   }
 }
 
-function prepareInput (input, kpPubKey, redeemScript, witnessScript) {
+function prepareInput (input, kpPubKey, redeemScript, witnessValue, witnessScript) {
   var expanded
   var prevOutType
   var prevOutScript
@@ -205,13 +205,15 @@ function prepareInput (input, kpPubKey, redeemScript, witnessScript) {
   var redeemScriptHash
 
   var witness = false
+  var p2wsh = false
   var witnessType
   var witnessScriptHash
 
   if (redeemScript && witnessScript) {
     redeemScriptHash = bcrypto.hash160(redeemScript)
-    witnessScriptHash = bcrypto.hash256(witnessScript)
+    witnessScriptHash = bcrypto.sha256(witnessScript)
     checkP2shInput(input, redeemScriptHash)
+
     if (!redeemScript.equals(bscript.witnessScriptHash.output.encode(witnessScriptHash))) throw new Error('Witness script inconsistent with redeem script')
 
     expanded = expandOutput(witnessScript, undefined, kpPubKey)
@@ -219,7 +221,7 @@ function prepareInput (input, kpPubKey, redeemScript, witnessScript) {
 
     prevOutType = bscript.types.P2SH
     prevOutScript = bscript.scriptHash.output.encode(redeemScriptHash)
-    p2sh = witness = true
+    p2sh = witness = p2wsh = true
     p2shType = bscript.types.P2WSH
     witnessType = expanded.scriptType
   } else if (redeemScript) {
@@ -242,7 +244,7 @@ function prepareInput (input, kpPubKey, redeemScript, witnessScript) {
 
     prevOutType = bscript.types.P2WSH
     prevOutScript = bscript.witnessScriptHash.output.encode(witnessScriptHash)
-    witness = true
+    witness = p2wsh = true
     witnessType = expanded.scriptType
   } else if (input.prevOutType) {
     // embedded scripts are not possible without a redeemScript
@@ -269,7 +271,7 @@ function prepareInput (input, kpPubKey, redeemScript, witnessScript) {
     input.redeemScriptType = p2shType
   }
 
-  if (witness && witnessType === bscript.types.P2WSH) {
+  if (p2wsh) {
     input.witnessScript = witnessScript
     input.witnessScriptType = witnessType
   }
@@ -517,7 +519,6 @@ TransactionBuilder.prototype.__build = function (allowIncomplete) {
   }
 
   var tx = this.tx.clone()
-
   // Create script signatures from inputs
   this.inputs.forEach(function (input, i) {
     var scriptType = input.redeemScriptType || input.prevOutType
@@ -554,7 +555,7 @@ function canSign (input) {
     input.witness !== undefined
 }
 
-TransactionBuilder.prototype.sign = function (vin, keyPair, redeemScript, hashType, witnessValue) {
+TransactionBuilder.prototype.sign = function (vin, keyPair, redeemScript, hashType, witnessValue, witnessScript) {
   if (keyPair.network !== this.network) throw new Error('Inconsistent network')
   if (!this.inputs[vin]) throw new Error('No input at index: ' + vin)
   hashType = hashType || Transaction.SIGHASH_ALL
@@ -570,7 +571,7 @@ TransactionBuilder.prototype.sign = function (vin, keyPair, redeemScript, hashTy
 
   var kpPubKey = keyPair.getPublicKeyBuffer()
   if (!canSign(input)) {
-    prepareInput(input, kpPubKey, redeemScript, witnessValue)
+    prepareInput(input, kpPubKey, redeemScript, witnessValue, witnessScript)
 
     if (!canSign(input)) throw Error(input.prevOutType + ' not supported')
   }
