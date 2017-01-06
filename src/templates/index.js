@@ -53,7 +53,7 @@ function classifyWitness (script, allowIncomplete) {
   var chunks = decompile(script)
 
   if (pubKeyHash.input.check(chunks)) return types.P2WPKH
-  if (scriptHash.input.check(chunks)) return types.P2WSH
+  if (scriptHash.input.check(chunks, allowIncomplete)) return types.P2WSH
 
   return types.NONSTANDARD
 }
