@@ -25,7 +25,7 @@ function fundAddress (unspents, outputs, callback) {
     txb.addOutput(x.address || kpAddress, x.value)
   })
 
-  result.inputs.forEach(function (x, i) {
+  result.inputs.forEach(function (_, i) {
     txb.sign(i, keyPair)
   })
 
@@ -33,7 +33,7 @@ function fundAddress (unspents, outputs, callback) {
   var txId = tx.getId()
 
   testnet.transactions.propagate(tx.toHex(), function (err) {
-    callback(err, outputs.map(function (x, i) {
+    callback(err, outputs.map(function (_, i) {
       return { txId: txId, vout: i }
     }))
   })

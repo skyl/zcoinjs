@@ -95,9 +95,9 @@ describe('TransactionBuilder', function () {
         var tx = new Transaction()
 
         f.inputs.forEach(function (input) {
-          var txHash = new Buffer(input.txId, 'hex').reverse()
+          var txHash2 = new Buffer(input.txId, 'hex').reverse()
 
-          tx.addInput(txHash, input.vout, undefined, bscript.fromASM(input.scriptSig))
+          tx.addInput(txHash2, input.vout, undefined, bscript.fromASM(input.scriptSig))
         })
 
         f.outputs.forEach(function (output) {
@@ -275,7 +275,7 @@ describe('TransactionBuilder', function () {
         f.inputs.forEach(function (input, index) {
           input.signs.forEach(function (sign) {
             var keyPairNetwork = NETWORKS[sign.network || f.network]
-            var keyPair = ECPair.fromWIF(sign.keyPair, keyPairNetwork)
+            var keyPair2 = ECPair.fromWIF(sign.keyPair, keyPairNetwork)
             var redeemScript
 
             if (sign.redeemScript) {
@@ -283,10 +283,10 @@ describe('TransactionBuilder', function () {
             }
 
             if (!sign.throws) {
-              txb.sign(index, keyPair, redeemScript, sign.hashType)
+              txb.sign(index, keyPair2, redeemScript, sign.hashType)
             } else {
               assert.throws(function () {
-                txb.sign(index, keyPair, redeemScript, sign.hashType)
+                txb.sign(index, keyPair2, redeemScript, sign.hashType)
               }, new RegExp(f.exception))
             }
           })
@@ -382,8 +382,8 @@ describe('TransactionBuilder', function () {
               txb = TransactionBuilder.fromTransaction(tx, network)
             }
 
-            var keyPair = ECPair.fromWIF(sign.keyPair, network)
-            txb.sign(i, keyPair, redeemScript, sign.hashType)
+            var keyPair2 = ECPair.fromWIF(sign.keyPair, network)
+            txb.sign(i, keyPair2, redeemScript, sign.hashType)
 
             // update the tx
             tx = txb.buildIncomplete()
@@ -414,8 +414,8 @@ describe('TransactionBuilder', function () {
       // now import the Transaction
       var txb = TransactionBuilder.fromTransaction(tx, NETWORKS.testnet)
 
-      var keyPair = ECPair.fromWIF('91avARGdfge8E4tZfYLoxeJ5sGBdNJQH4kvjJoQFacbgx3cTMqe', network)
-      txb.sign(0, keyPair, redeemScript)
+      var keyPair2 = ECPair.fromWIF('91avARGdfge8E4tZfYLoxeJ5sGBdNJQH4kvjJoQFacbgx3cTMqe', network)
+      txb.sign(0, keyPair2, redeemScript)
 
       var tx2 = txb.build()
       assert.equal(tx2.getId(), 'eab59618a564e361adef6d918bd792903c3d41bcf1220137364fb847880467f9')
