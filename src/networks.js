@@ -62,7 +62,7 @@ module.exports = {
     },
     pubKeyHash: 0x1cb8,
     scriptHash: 0x1cbd
-  }
+  },
   zctestnet: {
     messagePrefix: '\x18Zcash Signed Message:\n',
     bip32: {
@@ -73,5 +73,5 @@ module.exports = {
     pubKeyHash: 0x1cb8,
     scriptHash: 0x1cbd,
     wif: 0x80
-  },
-}
+  }
+};
