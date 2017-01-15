@@ -1,4 +1,6 @@
-# BitcoinJS (bitcoinjs-lib)
+# ZcoinJS
+
+WARNING: This software is a pre-pre-alpha experiment by a noob looking to add Zcash and Zclassic support to the BitcoinJS-lib codebase. It should not be used or taken seriously (yet).
 
 [![Build Status](https://travis-ci.org/bitcoinjs/bitcoinjs-lib.png?branch=master)](https://travis-ci.org/bitcoinjs/bitcoinjs-lib)
 [![NPM](https://img.shields.io/npm/v/bitcoinjs-lib.svg)](https://www.npmjs.org/package/bitcoinjs-lib)

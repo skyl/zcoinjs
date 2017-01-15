@@ -31,5 +31,47 @@ module.exports = {
     pubKeyHash: 0x30,
     scriptHash: 0x05,
     wif: 0xb0
+  },
+  zcash: {
+    messagePrefix: '\x18Zcash Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    //
+    pubKeyHash: 0x1cb8,
+    scriptHash: 0x1cbd,
+    wif: 0x80
+  },
+  ztestnet: {
+    messagePrefix: '\x18Zcash Signed Message:\n',
+    bip32: {
+      public: 0x043587cf,
+      private: 0x04358394
+    },
+    //
+    pubKeyHash: 0x1cb8,
+    scriptHash: 0x1cbd,
+    wif: 0x80
+  },
+  zclassic: {
+    messagePrefix: '\x18Zcash Signed Message:\n',
+    bip32: {
+      public: 0x0488b21e,
+      private: 0x0488ade4
+    },
+    pubKeyHash: 0x1cb8,
+    scriptHash: 0x1cbd
   }
+  zctestnet: {
+    messagePrefix: '\x18Zcash Signed Message:\n',
+    bip32: {
+      public: 0x043587cf,
+      private: 0x04358394
+    },
+    //
+    pubKeyHash: 0x1cb8,
+    scriptHash: 0x1cbd,
+    wif: 0x80
+  },
 }
